@@ -13,22 +13,29 @@
 #include <algorithm>
 // #include "helpers.cpp"
 
-class Simulation {
-	
-private:
-	vector <char> get_colors() {
-		vector <char> all_colors;
+class Simulation
+{
+
+  private:
+	vector<char> get_colors()
+	{
+		vector<char> all_colors;
 		char color;
-		int i,j;
-		for (i=0; i<height; i++) {
-			for (j=0; j<width; j++) {
+		int i, j;
+		for (i = 0; i < height; i++)
+		{
+			for (j = 0; j < width; j++)
+			{
 				color = grid[i][j];
-				if(std::find(all_colors.begin(), all_colors.end(), color) != all_colors.end()) {
-				    /* v contains x */
-				} else {
+				if (std::find(all_colors.begin(), all_colors.end(), color) != all_colors.end())
+				{
+					/* v contains x */
+				}
+				else
+				{
 					all_colors.push_back(color);
 					cout << "adding color " << color << endl;
-				    /* v does not contain x */
+					/* v does not contain x */
 				}
 			}
 		}
@@ -37,30 +44,28 @@ private:
 		return colors;
 	}
 
-public: 
-	vector < vector <char> > grid;
-	vector < vector <float> > beliefs;
+  public:
+	vector<vector<char>> grid;
+	vector<vector<float>> beliefs;
 
 	float blur, p_hit, p_miss, incorrect_sense_prob;
 
 	int height, width, num_colors;
-	
+
 	std::vector<int> true_pose;
 	std::vector<int> prev_pose;
 
-	vector <char> colors;
-	Simulation(vector < vector<char> >, float, float, vector <int>);
-
+	vector<char> colors;
+	Simulation(vector<vector<char>>, float, float, vector<int>);
 };
 
 /**
 Constructor for the Simulation class.
 */
-Simulation::Simulation(vector < vector <char> > map, 
-	float blurring,
-	float hit_prob, 
-	std::vector<int> start_pos
-	) 
+Simulation::Simulation(vector<vector<char>> map,
+					   float blurring,
+					   float hit_prob,
+					   std::vector<int> start_pos)
 {
 	grid = map;
 	blur = blurring;
@@ -78,36 +83,57 @@ You can test your code by running this function.
 Do that by first compiling this file and then 
 running the output.
 */
-// int main() {
-	
-// 	vector < vector <char> > map;
-// 	vector <char> mapRow;
-// 	int i, j, randInt;
-// 	char color;
-// 	std::vector<int> pose(2);
+/* int main()
+{
 
-// 	for (i = 0; i < 4; i++)
-// 	{
-// 		mapRow.clear();
-// 		for (j=0; j< 4; j++)
-// 		{
-// 			randInt = rand() % 2;
-// 			if (randInt == 0 ) {
-// 				color = 'r';
-// 			} 
-// 			else {
-// 				color = 'g';
-// 			}
-// 			mapRow.push_back(color);
-// 		}
-// 		map.push_back(mapRow);
-// 	}
-// 	cout << "map is\n";
-// 	Simulation simulation (map, 0.1, 0.9, pose);
-// 	// simulation = Simulation(map, 0.1, 0.9, pose);
-// 	cout << "initialization success!\n";
-// 	show_grid(map);
+	vector<vector<char>> map;
+	vector<char> mapRow;
+	int i, j, randInt;
+	char color;
+	std::vector<int> pose(2);
 
-// 	cout << "x, y = (" << simulation.true_pose[0] << ", " << simulation.true_pose[1] << ")" << endl;
-// 	return 0;
-// }
+	for (i = 0; i < 4; i++)
+	{
+		mapRow.clear();
+		for (j = 0; j < 4; j++)
+		{
+			randInt = rand() % 2;
+			if (randInt == 0)
+			{
+				color = 'r';
+			}
+			else
+			{
+				color = 'g';
+			}
+			mapRow.push_back(color);
+		}
+		map.push_back(mapRow);
+	}
+
+	// testing normalize function
+	std::cout << "testing normalize function" << '\n';
+	vector<vector<float>> test(2, vector<float>(2, 1.0));
+	show_grid(test);
+	vector<vector<float>> new_test = normalize(test);
+	show_grid(new_test);
+	// testing blur function
+	std::cout << "testing blur function" << '\n';
+	vector<vector<float>> blur_test = {{0., 0., 0.}, {0., 1., 0.}, {0., 0., 0.}};
+	show_grid(blur_test);
+	show_grid(blur(blur_test, 0.12));
+	// testing simulation*****************************
+	cout << "map is\n";
+	Simulation simulation(map, 0.1, 0.9, pose);
+	cout << "initialization success!\n";
+	show_grid(map);
+	show_grid(simulation.beliefs);
+	cout << "x, y = (" << simulation.true_pose[0] << ", " << simulation.true_pose[1] << ")" << endl;
+	// testing sense function
+	std::cout << "testing sense function" << '\n';
+	show_grid(sense('r', map, simulation.beliefs, 1., 0.0));
+	// testing move function
+	std::cout << "testing move function" << '\n';
+	show_grid(move(-1, -1, blur_test, 0.12));
+	return 0;
+} */

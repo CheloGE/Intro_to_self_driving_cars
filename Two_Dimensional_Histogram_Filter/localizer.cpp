@@ -38,11 +38,13 @@ using namespace std;
            0.25 0.25
            0.25 0.25
 */
-vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
-	vector< vector <float> > newGrid;
+vector<vector<float>> initialize_beliefs(vector<vector<char>> grid)
+{
+	int height = grid.size();
+	int width = grid[0].size();
+	int num_of_elems = height * width;
+	vector<vector<float>> newGrid(height, vector<float>(width, 1.0 / num_of_elems));
 
-	// your code here
-	
 	return newGrid;
 }
 
@@ -83,19 +85,28 @@ vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
     @return - a normalized two dimensional grid of floats 
     	   representing the updated beliefs for the robot. 
 */
-vector< vector <float> > sense(char color, 
-	vector< vector <char> > grid, 
-	vector< vector <float> > beliefs, 
-	float p_hit,
-	float p_miss) 
+vector<vector<float>> sense(char color,
+							vector<vector<char>> grid,
+							vector<vector<float>> beliefs,
+							float p_hit,
+							float p_miss)
 {
-	vector< vector <float> > newGrid;
+	int height = grid.size();
+	int width = grid[0].size();
+	vector<vector<float>> newBeliefs = beliefs;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			if (color == grid[i][j])
+				newBeliefs[i][j] = p_hit * beliefs[i][j];
+			else
+				newBeliefs[i][j] = p_miss * beliefs[i][j];
+		}
+	}
 
-	// your code here
-
-	return normalize(newGrid);
+	return normalize(newBeliefs);
 }
-
 
 /**
 	TODO - implement this function 
@@ -134,14 +145,22 @@ vector< vector <float> > sense(char color,
     @return - a normalized two dimensional grid of floats 
     	   representing the updated beliefs for the robot. 
 */
-vector< vector <float> > move(int dy, int dx, 
-	vector < vector <float> > beliefs,
-	float blurring) 
+vector<vector<float>> move(int dy, int dx,
+						   vector<vector<float>> beliefs,
+						   float blurring)
 {
-
-	vector < vector <float> > newGrid;
-
-	// your code here
+	int height = beliefs.size();
+	int width = beliefs[0].size();
+	vector<vector<float>> newGrid(height, vector<float>(width));
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int new_i = circular_ite(i + dy, height);
+			int new_j = circular_ite(j + dx, width);
+			newGrid[new_i][new_j] = beliefs[i][j];
+		}
+	}
 
 	return blur(newGrid, blurring);
 }
